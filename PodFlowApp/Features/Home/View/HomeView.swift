@@ -2,10 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    // 1. Get Favorites from Database
     @Query(sort: \SavedPodcast.dateAdded, order: .reverse) var favorites: [SavedPodcast]
     
-    // 2. Get Downloads from Manager
     @ObservedObject var downloadManager = DownloadManager.shared
     
     var body: some View {
@@ -13,33 +11,54 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 30) {
                     
-                    // SECTION 1: DOWNLOADED (OFFLINE READY)
-                    // We filter episodes that are actually on disk
-                    if !downloadManager.downloadedEpisodeIDs.isEmpty {
+
+                    if !downloadManager.savedEpisodes.isEmpty {
                         VStack(alignment: .leading) {
-                            Text("Ready to Play (Offline)")
+                            Text("Downloads (Offline)")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .padding(.horizontal)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 16) {
-                                    // In a real app, you'd fetch the full Episode objects from a DB.
-                                    // For this MVP, we will show a placeholder or basic info if we had it saved.
-                                    // To keep it simple and crash-free, we show a "Downloads" card that links to Library.
-                                    
-                                    NavigationLink(destination: LibraryView()) {
-                                        VStack {
-                                            Image(systemName: "arrow.down.circle.fill")
-                                                .font(.system(size: 40))
-                                                .foregroundStyle(.green)
-                                                .frame(width: 140, height: 140)
-                                                .background(Color.gray.opacity(0.1))
-                                                .cornerRadius(12)
-                                            
-                                            Text("See All Downloads")
-                                                .font(.headline)
-                                                .foregroundStyle(.primary)
+                                    // Iterate over the SAVED EPISODES
+                                    ForEach(Array(downloadManager.savedEpisodes.values)) { episode in
+                                        Button(action: {
+                                            let dummyPodcast = Podcast(
+                                                collectionId: 0, 
+                                                collectionName: "Offline Library", 
+                                                artistName: "Unknown", 
+                                                artworkUrl600: nil, 
+                                                feedUrl: nil, 
+                                                primaryGenreName: nil, 
+                                                trackCount: nil
+                                            )
+                                           
+                                            PlayerViewModel.shared.play(episode: episode, podcast: dummyPodcast)
+                                        }) {
+                                            VStack(alignment: .leading) {
+                                                ZStack {
+                                                    Rectangle()
+                                                        .fill(Color(uiColor: .tertiarySystemBackground))
+                                                        .frame(width: 140, height: 140)
+                                                        .cornerRadius(12)
+                                                    
+                                                    Image(systemName: "play.circle.fill")
+                                                        .font(.largeTitle)
+                                                        .foregroundStyle(Color(hex: "8A2BE2"))
+                                                }
+                                                
+                                                Text(episode.title)
+                                                    .font(.headline)
+                                                    .foregroundStyle(.primary)
+                                                    .lineLimit(1)
+                                                    .frame(width: 140, alignment: .leading)
+                                                
+                                                Text("Ready to Play")
+                                                    .font(.caption)
+                                                    .foregroundStyle(.green)
+                                                    .frame(width: 140, alignment: .leading)
+                                            }
                                         }
                                     }
                                 }
@@ -48,7 +67,7 @@ struct HomeView: View {
                         }
                     }
                     
-                    // SECTION 2: FAVORITES
+
                     if !favorites.isEmpty {
                         VStack(alignment: .leading) {
                             Text("Your Favorites")
@@ -96,7 +115,7 @@ struct HomeView: View {
                             }
                         }
                     } else {
-                        // Empty State
+
                         ContentUnavailableView("Welcome to PodFlow", 
                                                systemImage: "waveform", 
                                                description: Text("Search for podcasts to build your home screen."))

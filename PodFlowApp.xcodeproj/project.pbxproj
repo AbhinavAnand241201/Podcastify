@@ -29,9 +29,22 @@
 		1596F29F2EFA731C00866C5F /* PodFlowAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PodFlowAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		15411ACF2EFBE47E00911C4C /* Exceptions for "PodFlowApp" folder in "PodFlowApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1596F2872EFA731B00866C5F /* PodFlowApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1596F28A2EFA731B00866C5F /* PodFlowApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				15411ACF2EFBE47E00911C4C /* Exceptions for "PodFlowApp" folder in "PodFlowApp" target */,
+			);
 			path = PodFlowApp;
 			sourceTree = "<group>";
 		};
@@ -400,6 +413,10 @@
 				DEVELOPMENT_TEAM = Y4GRLGKNQ9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PodFlowApp/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use audio processing to analyze podcast topics.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We process audio locally to generate smart chapter summaries for you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +445,10 @@
 				DEVELOPMENT_TEAM = Y4GRLGKNQ9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PodFlowApp/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We use audio processing to analyze podcast topics.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We process audio locally to generate smart chapter summaries for you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

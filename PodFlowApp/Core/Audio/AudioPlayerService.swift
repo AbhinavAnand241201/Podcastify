@@ -7,7 +7,7 @@ class AudioPlayerService: NSObject, ObservableObject {
     
     var player: AVPlayer?
     
-    // PUBLISHED STATE
+
     @Published var isPlaying: Bool = false
     @Published var currentTime: Double = 0.0
     @Published var duration: Double = 0.0
@@ -32,18 +32,17 @@ class AudioPlayerService: NSObject, ObservableObject {
         }
     }
     
-    // MARK: - PLAYBACK CONTROLS
+
     func play(episode: Episode) {
         let downloadManager = DownloadManager.shared
         var urlToPlay: URL?
         
-        // 1. Check Offline
+
         if let localURL = downloadManager.localFilePath(for: episode.id),
            downloadManager.isDownloaded(episodeID: episode.id) {
             print("🎧 Playing from Offline Storage")
             urlToPlay = localURL
         } else {
-            // 2. Stream
             print("☁️ Streaming from Web")
             if let url = URL(string: episode.audioURL) {
                 urlToPlay = url
@@ -54,7 +53,8 @@ class AudioPlayerService: NSObject, ObservableObject {
         
         let item = AVPlayerItem(url: finalURL)
         
-        // Listen for when the song ends (For History/Auto-Next)
+        let item = AVPlayerItem(url: finalURL)
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(playerDidFinishPlaying),
                                                name: .AVPlayerItemDidPlayToEndTime,
@@ -94,7 +94,7 @@ class AudioPlayerService: NSObject, ObservableObject {
         }
     }
     
-    // MARK: - SLEEP TIMER LOGIC
+
     func startSleepTimer(minutes: Double) {
         cancelSleepTimer() // Reset if exists
         
@@ -102,13 +102,13 @@ class AudioPlayerService: NSObject, ObservableObject {
         self.sleepTimeRemaining = totalSeconds
         self.sleepTimerActive = true
         
-        // Countdown Timer (Updates UI every second)
+        self.sleepTimerActive = true
+        
         self.sleepTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             
             self.sleepTimeRemaining -= 1
             
-            // Start Fading out in the last 10 seconds
             if self.sleepTimeRemaining <= 10 && self.sleepTimeRemaining > 0 {
                 self.fadeOutVolume()
             }
@@ -125,7 +125,7 @@ class AudioPlayerService: NSObject, ObservableObject {
         sleepTimer = nil
         sleepTimerActive = false
         sleepTimeRemaining = 0
-        player?.volume = 1.0 // Reset volume just in case
+        player?.volume = 1.0
     }
     
     private func fadeOutVolume() {
@@ -135,7 +135,7 @@ class AudioPlayerService: NSObject, ObservableObject {
         }
     }
     
-    // MARK: - OBSERVERS
+
     private func setupTimeObserver() {
         if let observer = timeObserver {
             player?.removeTimeObserver(observer)
